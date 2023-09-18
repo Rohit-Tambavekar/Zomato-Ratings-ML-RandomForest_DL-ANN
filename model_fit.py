@@ -7,13 +7,14 @@ from sklearn.preprocessing import MultiLabelBinarizer, LabelEncoder
 from sklearn.ensemble import RandomForestRegressor as rfr
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
-
+import bz2
 
 
 class ZomatoModel:
 
     def __init__(self):
         self.rf = None
+        self.rft = None
         self.ann = None
         self.sc = None
         self.mlb = MultiLabelBinarizer()
@@ -117,10 +118,10 @@ class ZomatoModel:
         y1 = self.traindf['rate']
         x_train, x_eval, y_train, y_eval = train_test_split(X1, y1, random_state=2, test_size=0.2, stratify=y1)
         
-        self.rf = rfr(criterion = 'squared_error', max_depth= 30, min_samples_split= 2, n_estimators= 150)
-        self.rf.fit(x_train, y_train)
+        self.rft = rfr(criterion = 'squared_error', max_depth= 30, min_samples_split= 2, n_estimators= 150)
+        self.rft.fit(x_train, y_train)
 
-        pred = self.rf.predict(x_eval)
+        pred = self.rft.predict(x_eval)
     
     def pickle_encodings(self):
         with open('label_encoder.pkl', 'wb') as le_file:
@@ -129,17 +130,29 @@ class ZomatoModel:
         with open('multi_label_binarizer.pkl', 'wb') as mlb_file:
             pickle.dump(self.mlb, mlb_file)
 
+    # def pickle_model(self):
+    #     if self.rft is not None:
+    #         with open('random_forest_model.pkl', 'wb') as model_file:
+    #             pickle.dump(self.rf, model_file)
+                
     def pickle_model(self):
         if self.rf is not None:
-            with open('random_forest_model.pkl', 'wb') as model_file:
+            with bz2.BZ2File('random_forest_model.pkl.bz2', 'wb') as model_file:
                 pickle.dump(self.rf, model_file)
-    
+                
     def unpickle_model(self):
         try:
-            with open('random_forest_model.pkl', 'rb') as model_file:
+            with bz2.BZ2File('random_forest_model.pkl.bz2', 'rb') as model_file:
                 self.rf = pickle.load(model_file)
         except FileNotFoundError:
-            print("Model file not found. Please make sure 'random_forest_model.pkl' exists.")
+            print("Model file not found. Please make sure 'random_forest_model.pkl.bz2' exists.")
+    
+    # def unpickle_model(self):
+    #     try:
+    #         with open('random_forest_model.pkl', 'rb') as model_file:
+    #             self.rf = pickle.load(model_file)
+    #     except FileNotFoundError:
+    #         print("Model file not found. Please make sure 'random_forest_model.pkl' exists.")
 
     def unpickle_encodings(self):
         try:
