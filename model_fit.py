@@ -136,14 +136,14 @@ class ZomatoModel:
     #             pickle.dump(self.rf, model_file)
                 
     def pickle_model(self):
-        if self.rf is not None:
+        if self.rft is not None:
             with bz2.BZ2File('random_forest_model.pkl.bz2', 'wb') as model_file:
-                pickle.dump(self.rf, model_file)
+                pickle.dump(self.rft, model_file)
                 
     def unpickle_model(self):
         try:
             with bz2.BZ2File('random_forest_model.pkl.bz2', 'rb') as model_file:
-                self.rf = pickle.load(model_file)
+                self.rft = pickle.load(model_file)
         except FileNotFoundError:
             print("Model file not found. Please make sure 'random_forest_model.pkl.bz2' exists.")
     

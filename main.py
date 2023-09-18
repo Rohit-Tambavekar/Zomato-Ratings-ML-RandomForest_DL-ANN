@@ -141,7 +141,7 @@ def main():
                 single_row_df = pd.DataFrame(data)
 
                 # Make predictions using the trained model
-                y_single_row_pred = zomato_model.rf.predict(single_row_df)[0]
+                y_single_row_pred = zomato_model.rft.predict(single_row_df)[0]
                 st.write(f"The Random forest rating for the Restaurant is :{round(y_single_row_pred,1)}")     
             
             if st.button('Check ANN Ratings'):
