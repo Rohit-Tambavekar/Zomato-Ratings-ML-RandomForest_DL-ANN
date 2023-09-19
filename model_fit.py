@@ -184,24 +184,38 @@ class ZomatoModel:
         self.sc = StandardScaler()
         X_train = self.sc.fit_transform(x_train)
         X_eval = self.sc.transform(x_eval)
-        pd.set_option('display.max_columns',None)
-        print(x_train.head(2))
-        
+                
         self.ann = tf.keras.models.Sequential()
         self.ann.add(tf.keras.layers.Dense(units=4, activation='tanh'))
         self.ann.add(tf.keras.layers.Dense(units=1, activation='tanh'))
         self.ann.add(tf.keras.layers.Dense(units=1))
         self.ann.compile(optimizer = 'sgd', loss = 'mean_squared_error')
         self.ann.fit(X_train, y_train, batch_size = 32, epochs = 100)
-      
-    def pickle_ann_model(self):
+        
+    def save_ann_model(self, model_path='ann_model.h5'):
         try:
-            with open('ann_model.pkl', 'wb') as ann_model_file:
-                pickle.dump(self.ann, ann_model_file)
-                print(self.ann)
-            print(f"ANN model and StandardScaler have been pickled and saved successfully.")
+            self.ann.save(model_path)
+            print(f"ANN model has been saved successfully to {model_path}.")
         except Exception as e:
-            print(f"An error occurred while pickling the ANN model: {str(e)}")
+            print(f"An error occurred while saving the ANN model: {str(e)}")
+
+    def load_ann_model(self, model_path='ann_model.h5'):
+        try:
+            self.ann = tf.keras.models.load_model(model_path)
+            print(f"ANN model has been successfully loaded from {model_path}.")
+        except FileNotFoundError:
+            print(f"ANN model file '{model_path}' not found. Please make sure it exists.")
+        except Exception as e:
+            print(f"An error occurred while loading the ANN model: {str(e)}")
+              
+    # def pickle_ann_model(self):
+    #     try:
+    #         with open('ann_model.pkl', 'wb') as ann_model_file:
+    #             pickle.dump(self.ann, ann_model_file)
+    #             print(self.ann)
+    #         print(f"ANN model and StandardScaler have been pickled and saved successfully.")
+    #     except Exception as e:
+    #         print(f"An error occurred while pickling the ANN model: {str(e)}")
 
     def pickle_sc_model(self):
         try:
@@ -211,15 +225,15 @@ class ZomatoModel:
         except Exception as e:
             print(f"An error occurred while pickling the ANN model: {str(e)}")
     
-    def unpickle_ann_model(self):
-        try:
-            with open('ann_model.pkl', 'rb') as ann_model_file:
-                self.ann = pickle.load(ann_model_file)
-            print(f"ANN model has been successfully unpickled.")
-        except FileNotFoundError:
-            print("ANN model file 'ann_model.pkl' not found. Please make sure it exists.")
-        except Exception as e:
-            print(f"An error occurred while unpickling the ANN model: {str(e)}")
+    # def unpickle_ann_model(self):
+    #     try:
+    #         with open('ann_model.pkl', 'rb') as ann_model_file:
+    #             self.ann = pickle.load(ann_model_file)
+    #         print(f"ANN model has been successfully unpickled.")
+    #     except FileNotFoundError:
+    #         print("ANN model file 'ann_model.pkl' not found. Please make sure it exists.")
+    #     except Exception as e:
+    #         print(f"An error occurred while unpickling the ANN model: {str(e)}")
     
     def unpickle_sc_model(self):
         try:
@@ -254,7 +268,8 @@ def main():
     zomato_model.train_model_on_ft_importance(sort_fimp,train,test)
     
     zomato_model.pickle_encodings()
-    zomato_model.pickle_ann_model()
+    zomato_model.save_ann_model()
+    # zomato_model.pickle_ann_model()
     zomato_model.pickle_sc_model()
     zomato_model.pickle_model()
     

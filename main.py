@@ -4,6 +4,9 @@ import pandas as pd
 from model_fit import ZomatoModel
 from model_fit import *
 import pickle
+from tensorflow import keras
+
+
 st.set_page_config(
     page_title="Zomato Rating",
     layout="wide",
@@ -92,17 +95,10 @@ def main():
     # Load the trained model from the pickled file
     zomato_model.unpickle_model()
     zomato_model.unpickle_encodings()
-    zomato_model.unpickle_ann_model()
-    zomato_model.unpickle_sc_model()
-    try:
-        with open('ann_model.pkl', 'rb') as ann_model_file:
-            ann = pickle.load(ann_model_file)
-        st.write(f"ANN model has been successfully unpickled.")
-    except FileNotFoundError:
-        st.write("ANN model file 'ann_model.pkl' not found. Please make sure it exists.")
-    except Exception as e:
-        st.write(f"An error occurred while unpickling the ANN model: {str(e)}")
-    
+    loaded_model = keras.models.load_model('model.h5')
+    # zomato_model.unpickle_ann_model()
+    # zomato_model.unpickle_sc_model()
+        
     left_tit,center_tit ,right_tit = st.columns([15,10,15])
     with center_tit:
         st.title(":red[Zomato Ratings]")
@@ -205,7 +201,7 @@ def main():
                 # Sort the columns according to the desired order
                 input_data = zomato_model.sc.transform(single_row_df)
                 # Then, make predictions using the ANN model
-                predictions = zomato_model.ann.predict(input_data)[0]
+                predictions = loaded_model.ann.predict(input_data)[0]
                 preds = np.round(predictions,1)
                 # Print the predictions
                 st.write(f'Ann Ratings for the Restaurant is : {np.round(preds,1)}')
