@@ -3,7 +3,7 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 from model_fit import ZomatoModel
 from model_fit import *
-
+import pickle
 st.set_page_config(
     page_title="Zomato Rating",
     layout="wide",
@@ -93,7 +93,7 @@ def main():
     zomato_model.unpickle_model()
     zomato_model.unpickle_encodings()
     zomato_model.unpickle_ann_model()
-    st.write(zomato_model.sc)
+    zomato_model.unpickle_sc_model()
     left_tit,center_tit ,right_tit = st.columns([15,10,15])
     with center_tit:
         st.title(":red[Zomato Ratings]")

@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestRegressor as rfr
 from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
 import bz2
-
+import pickletools  
 
 class ZomatoModel:
 
@@ -193,7 +193,7 @@ class ZomatoModel:
         self.ann.add(tf.keras.layers.Dense(units=1))
         self.ann.compile(optimizer = 'sgd', loss = 'mean_squared_error')
         self.ann.fit(X_train, y_train, batch_size = 32, epochs = 100)
-        
+      
     def pickle_ann_model(self):
         try:
             with open('ann_model.pkl', 'wb') as ann_model_file:
@@ -203,6 +203,14 @@ class ZomatoModel:
         except Exception as e:
             print(f"An error occurred while pickling the ANN model: {str(e)}")
 
+    def pickle_sc_model(self):
+        try:
+            with open('sc_model.pkl', 'wb') as sc_model_file:
+                pickle.dump(self.sc, sc_model_file)  # Pickle the StandardScaler too
+            print(f"ANN model and StandardScaler have been pickled and saved successfully.")
+        except Exception as e:
+            print(f"An error occurred while pickling the ANN model: {str(e)}")
+    
     def unpickle_ann_model(self):
         try:
             with open('ann_model.pkl', 'rb') as ann_model_file:
@@ -213,7 +221,16 @@ class ZomatoModel:
             print("ANN model file 'ann_model.pkl' not found. Please make sure it exists.")
         except Exception as e:
             print(f"An error occurred while unpickling the ANN model: {str(e)}")
-                
+    
+    def unpickle_sc_model(self):
+        try:
+            with open('sc_model.pkl', 'rb') as sc_model_file:
+                self.sc = pickle.load(sc_model_file)  # Unpickle the StandardScaler too
+            print(f"ANN model and StandardScaler have been successfully unpickled.")
+        except FileNotFoundError:
+            print("ANN model file 'ann_model.pkl' not found. Please make sure it exists.")
+        except Exception as e:
+            print(f"An error occurred while unpickling the ANN model: {str(e)}")            
         
         
         
@@ -239,6 +256,7 @@ def main():
     
     zomato_model.pickle_encodings()
     zomato_model.pickle_ann_model()
+    zomato_model.pickle_sc_model()
     zomato_model.pickle_model()
 
 if __name__ == "__main__":
