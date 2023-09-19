@@ -193,7 +193,7 @@ def main():
                 single_row_df = single_row_df[desired_columns]
 
                 # Sort the columns according to the desired order
-                
+                st.write(zomato_model.sc)
                 input_data = zomato_model.sc.transform(single_row_df)
                 # Then, make predictions using the ANN model
                 predictions = zomato_model.ann.predict(input_data)[0]
