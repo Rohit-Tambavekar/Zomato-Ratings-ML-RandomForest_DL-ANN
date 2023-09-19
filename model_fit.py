@@ -198,6 +198,7 @@ class ZomatoModel:
         try:
             with open('ann_model.pkl', 'wb') as ann_model_file:
                 pickle.dump(self.ann, ann_model_file)
+                print(self.ann)
             print(f"ANN model and StandardScaler have been pickled and saved successfully.")
         except Exception as e:
             print(f"An error occurred while pickling the ANN model: {str(e)}")
@@ -205,7 +206,7 @@ class ZomatoModel:
     def pickle_sc_model(self):
         try:
             with open('sc_model.pkl', 'wb') as sc_model_file:
-                pickle.dump(self.sc, sc_model_file)  # Pickle the StandardScaler too
+                pickle.dump(self.sc, sc_model_file)  # Pickle the StandardScaler
             print(f"ANN model and StandardScaler have been pickled and saved successfully.")
         except Exception as e:
             print(f"An error occurred while pickling the ANN model: {str(e)}")
@@ -223,12 +224,12 @@ class ZomatoModel:
     def unpickle_sc_model(self):
         try:
             with open('sc_model.pkl', 'rb') as sc_model_file:
-                self.sc = pickle.load(sc_model_file)  # Unpickle the StandardScaler too
+                self.sc = pickle.load(sc_model_file)  # Unpickle the StandardScaler
             print(f"StandardScaler has been successfully unpickled.")
         except FileNotFoundError:
-            print("ANN model file 'ann_model.pkl' not found. Please make sure it exists.")
+            print("SC model file 'ann_model.pkl' not found. Please make sure it exists.")
         except Exception as e:
-            print(f"An error occurred while unpickling the ANN model: {str(e)}")            
+            print(f"An error occurred while unpickling the sc model: {str(e)}")            
         
         
         
