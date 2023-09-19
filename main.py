@@ -201,7 +201,7 @@ def main():
                 # Sort the columns according to the desired order
                 input_data = zomato_model.sc.transform(single_row_df)
                 # Then, make predictions using the ANN model
-                predictions = loaded_model.ann.predict(input_data)[0]
+                predictions = loaded_model.predict(input_data)[0]
                 preds = np.round(predictions,1)
                 # Print the predictions
                 st.write(f'Ann Ratings for the Restaurant is : {np.round(preds,1)}')
