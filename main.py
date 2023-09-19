@@ -94,6 +94,14 @@ def main():
     zomato_model.unpickle_encodings()
     zomato_model.unpickle_ann_model()
     zomato_model.unpickle_sc_model()
+    try:
+        with open('ann_model.pkl', 'rb') as ann_model_file:
+            self.ann = pickle.load(ann_model_file)
+        st.write(f"ANN model has been successfully unpickled.")
+    except FileNotFoundError:
+        st.write("ANN model file 'ann_model.pkl' not found. Please make sure it exists.")
+    except Exception as e:
+        st.write(f"An error occurred while unpickling the ANN model: {str(e)}")
     left_tit,center_tit ,right_tit = st.columns([15,10,15])
     with center_tit:
         st.title(":red[Zomato Ratings]")
