@@ -94,7 +94,6 @@ def main():
     zomato_model.unpickle_encodings()
     zomato_model.unpickle_ann_model()
     zomato_model.unpickle_sc_model()
-    st.write(zomato_model.ann)
     left_tit,center_tit ,right_tit = st.columns([15,10,15])
     with center_tit:
         st.title(":red[Zomato Ratings]")
