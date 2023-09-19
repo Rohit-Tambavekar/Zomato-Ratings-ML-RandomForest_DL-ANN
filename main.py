@@ -95,9 +95,9 @@ def main():
     # Load the trained model from the pickled file
     zomato_model.unpickle_model()
     zomato_model.unpickle_encodings()
-    loaded_model = keras.models.load_model('model.h5')
+    loaded_model = keras.models.load_model('ann_model.h5')
     # zomato_model.unpickle_ann_model()
-    # zomato_model.unpickle_sc_model()
+    zomato_model.unpickle_sc_model()
         
     left_tit,center_tit ,right_tit = st.columns([15,10,15])
     with center_tit:
