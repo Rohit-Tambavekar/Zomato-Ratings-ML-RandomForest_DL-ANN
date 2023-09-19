@@ -254,9 +254,9 @@ def main():
     zomato_model.train_model_on_ft_importance(sort_fimp,train,test)
     
     zomato_model.pickle_encodings()
-    zomato_model.pickle_model()
     zomato_model.pickle_ann_model()
     zomato_model.pickle_sc_model()
+    zomato_model.pickle_model()
     
 
 if __name__ == "__main__":
