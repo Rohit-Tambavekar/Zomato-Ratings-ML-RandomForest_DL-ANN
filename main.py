@@ -93,6 +93,7 @@ def main():
     zomato_model.unpickle_model()
     zomato_model.unpickle_encodings()
     zomato_model.unpickle_ann_model()
+    st.write(zomato_model.sc)
     left_tit,center_tit ,right_tit = st.columns([15,10,15])
     with center_tit:
         st.title(":red[Zomato Ratings]")
@@ -193,7 +194,6 @@ def main():
                 single_row_df = single_row_df[desired_columns]
 
                 # Sort the columns according to the desired order
-                st.write(zomato_model.sc)
                 input_data = zomato_model.sc.transform(single_row_df)
                 # Then, make predictions using the ANN model
                 predictions = zomato_model.ann.predict(input_data)[0]
