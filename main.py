@@ -104,8 +104,8 @@ def main():
         st.title(":red[Zomato Ratings]")
     selected = option_menu(
         menu_title=None,
-        options = ["Home","Dashboard","Contact"],
-        icons=["house","kaban","envelope"],
+        options = ["Home"],
+        icons=["house"],
         menu_icon = "cast",
         default_index = 0,
         orientation = "horizontal"
